@@ -1,21 +1,24 @@
 import React, { useEffect, useRef, useState } from 'react';
 import SpotifySearch from './SpotifySearch';
-// import Nav from './Nav';
 import { useAuth } from './AuthProvider';
 import GuestNamePrompt from './GuestNamePrompt';
+import { useParams } from 'react-router-dom';
 
 export default function SessionRoom() {
     let ws = useRef(null);
     let auth = useAuth();
+    let params = useParams();
     const [showGuestPrompt, setShowGuestPrompt] = useState(false);
+    const [sessionHost, setSessionHost] = useState(null);
 
-    // Add session code or route away
     useEffect(() => {
+        setSessionHost(params.host);
+
         if (!auth.user) {
             setShowGuestPrompt(true);
             return;
         }
-    }, [auth.user]);
+    }, [auth.user, sessionHost, params.host]);
 
     // Websocket connections
     useEffect(() => {

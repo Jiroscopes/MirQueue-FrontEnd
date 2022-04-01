@@ -22,7 +22,11 @@ const Router = () => (
                 <Route path="/enter-code" exact>
                     <EnterCode />
                 </Route>
-                <Route path="/session/:id" component={SessionRoom} exact />
+                <Route
+                    path="/session/:host/:sessionCode"
+                    component={SessionRoom}
+                    exact
+                />
                 <PrivateRoute component={Dashboard} path="/dashboard" exact />
             </Switch>
         </BrowserRouter>
