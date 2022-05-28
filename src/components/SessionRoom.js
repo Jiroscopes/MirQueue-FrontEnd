@@ -22,44 +22,44 @@ export default function SessionRoom() {
 
     // Websocket connections
     useEffect(() => {
-        // if (auth.user) {
-        //   ws.current = new WebSocket(`${process.env.REACT_APP_WS_URL}`);
-        //   ws.current.onopen = () => {
-        //     let socketMessage = {
-        //       type: 'joined_session',
-        //       user: auth.user,
-        //     };
-        //     ws.current.send(JSON.stringify(socketMessage));
-        //     console.log('WS Connected');
-        //   };
-        //   ws.current.onclose = () => {
-        //     console.log('WS Closed');
-        //   };
-        //   return () => {
-        //     ws.current.close();
-        //   };
-        // }
+        if (auth.user) {
+            ws.current = new WebSocket(`${process.env.REACT_APP_WS_URL}`);
+            ws.current.onopen = () => {
+                let socketMessage = {
+                    type: 'joined_session',
+                    user: auth.user,
+                };
+                ws.current.send(JSON.stringify(socketMessage));
+                console.log('WS Connected');
+            };
+            ws.current.onclose = () => {
+                console.log('WS Closed');
+            };
+            return () => {
+                ws.current.close();
+            };
+        }
     });
 
     // Websocket messages
-    // useEffect(() => {
-    // if (auth.user) {
-    //     ws.current.onmessage = (message) => {
-    //         // console.log(message);
-    //     };
-    // }
-    // });
+    useEffect(() => {
+        if (auth.user) {
+            ws.current.onmessage = (message) => {
+                console.log(message);
+            };
+        }
+    });
 
     return (
         <div className="session">
-            {showGuestPrompt ? (
+            {/* {showGuestPrompt ? (
                 <GuestNamePrompt
                     setShowGuestPrompt={setShowGuestPrompt}
                     showGuestPrompt={showGuestPrompt}
                 />
             ) : (
                 ''
-            )}
+            )} */}
             <div className="search-bar">
                 <div className="search-bar-input-container">
                     <SpotifySearch ws={ws} />

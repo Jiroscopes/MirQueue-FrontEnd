@@ -140,6 +140,24 @@ export default function GuestNamePrompt({
         setShowGuestPrompt(false);
     }
 
+    async function checkGuestName(name) {
+        const url = `${process.env.REACT_APP_API_URL}/guest-user`;
+
+        const response = await fetch(url, {
+            method: 'POST',
+            mode: 'cors',
+            cache: 'no-cache',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ name }),
+        });
+
+        const data = await response.json();
+
+        return data;
+    }
+
     return (
         <PromptContainer>
             <Prompt>
