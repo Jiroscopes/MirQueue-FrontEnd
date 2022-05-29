@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import SearchResult from './SearchResult';
+import { useParams } from 'react-router-dom';
 
-export default function SpotifySearch({ ws }) {
+export default function SpotifySearch({ ws, queue }) {
     // State here, update on type and make a request each time
     const [searchParam, setSearchParam] = useState(null);
     const [currentTrackList, setCurrentTrackList] = useState(null);
+    // Contains Host & Session Name
+    let params = useParams();
     // const history = useHistory();
 
     useEffect(() => {
@@ -37,7 +40,7 @@ export default function SpotifySearch({ ws }) {
             },
             body: JSON.stringify({
                 username: username,
-                host: 1,
+                host: params,
                 sessionCode: 'test',
                 searchParam: searchParam,
             }),
@@ -65,6 +68,7 @@ export default function SpotifySearch({ ws }) {
         const trackObj = {
             name: track.name,
             uri: track.uri,
+            id: track.id, // Spotify track ID
             artists: {
                 ...trackArtists,
             },
@@ -75,7 +79,14 @@ export default function SpotifySearch({ ws }) {
 
     function displaySongs() {
         return currentTrackList.map((song) => {
-            return <SearchResult ws={ws} key={song.uri} song={song} />;
+            return (
+                <SearchResult
+                    ws={ws}
+                    key={song.uri}
+                    song={song}
+                    selected={queue[song.id] ?? false}
+                />
+            );
         });
     }
 

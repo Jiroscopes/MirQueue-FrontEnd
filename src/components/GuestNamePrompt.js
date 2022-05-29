@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
 import '../css/style.css';
-import { checkGuestName, validString } from '../utils';
+import { /*checkGuestName,*/ validString } from '../utils';
 import { useAuth } from './AuthProvider';
 
 const PromptContainer = styled.div`
@@ -126,8 +126,6 @@ export default function GuestNamePrompt({
             setErrorText(data);
             return;
         }
-
-        console.log(data);
 
         let user = {
             username: data,

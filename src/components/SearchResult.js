@@ -1,18 +1,23 @@
 import React from 'react';
-// import { addItemToQueue } from '../utils'
 import { useAuth } from './AuthProvider';
 import { useParams } from 'react-router-dom';
 
-export default function SearchResult({ ws, song }) {
+export default function SearchResult({ ws, song, selected }) {
     // Contains Host & Session Name
     let params = useParams();
     let auth = useAuth();
 
     function addSong() {
+        // Can't select something you've already selected
+        if (selected) {
+            return;
+        }
         // Send the entire user object
         let socketMessage = {
             type: 'add_song',
             uri: song.uri,
+            trackID: song.id,
+            trackName: song.name,
             user: auth.user,
             session: params,
         };
@@ -32,7 +37,7 @@ export default function SearchResult({ ws, song }) {
                     );
                 })}
             </div>
-            <p>Add +</p>
+            <p>{selected ? 'Added!' : 'Add +'}</p>
         </div>
     );
 }
