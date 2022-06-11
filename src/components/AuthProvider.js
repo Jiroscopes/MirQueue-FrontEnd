@@ -34,7 +34,7 @@ function useProvideAuth() {
 
         const windowFeatures = 'height=730, width=450, menubar=no,toolbar=no';
         const clientId = '4d1c7a6700194a6dab532396ed915339';
-        const redirectUrl = `http://localhost:8080/callback`;
+        const redirectUrl = `${process.env.REACT_APP_API_URL}/callback`;
         const scopes =
             'user-read-private user-read-email user-top-read user-modify-playback-state';
 

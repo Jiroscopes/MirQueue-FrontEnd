@@ -41,7 +41,7 @@ export default function SpotifySearch({ ws, queue }) {
             body: JSON.stringify({
                 username: username,
                 host: params,
-                sessionCode: 'test',
+                sessionCode: params.sessionCode,
                 searchParam: searchParam,
             }),
         });

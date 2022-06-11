@@ -119,7 +119,7 @@ export default function GenerateCodeModal({ showCodeModal, setShowCodeModal }) {
         if (sessionCode) {
             try {
                 await navigator.clipboard.writeText(
-                    `http://localhost:3000/session/${auth.user.username}/${sessionCode}`
+                    `/session/${auth.user.username}/${sessionCode}`
                 );
                 setClipboardCopied(true);
             } catch (err) {
@@ -181,7 +181,7 @@ export default function GenerateCodeModal({ showCodeModal, setShowCodeModal }) {
             return;
         }
 
-        history.push(`/session/${sessionCode}`);
+        history.push(`/session/${auth.user.username}/${sessionCode}`);
     }
 
     return (
@@ -199,7 +199,7 @@ export default function GenerateCodeModal({ showCodeModal, setShowCodeModal }) {
                     <CodeInput type="text" onChange={handleInput} />
                     <CodeDiv error={errorMessage ? true : undefined}>
                         {errorMessage ||
-                            `http://localhost:3000/session/${
+                            `${process.env.REACT_APP_URL}/session/${
                                 auth.user.username
                             }/${sessionCode ?? ''}`}
                     </CodeDiv>
