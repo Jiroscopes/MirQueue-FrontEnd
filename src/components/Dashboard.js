@@ -3,12 +3,13 @@ import styled from 'styled-components';
 import '../css/style.css';
 // import { useAuth } from './AuthProvider';
 import GenerateCodeModal from './GenerateCodeModal';
+import JoinSessionModal from './JoinSessionModal';
 import Nav from './Nav';
 
 const DashboardHome = styled.div`
     width: 100%;
     height: 100vh;
-    background: var(--dark-blue);
+    background: var(--black);
     display: grid;
     grid-template-rows: 1fr 1fr 1fr;
     grid-template-columns: 1fr;
@@ -51,9 +52,14 @@ const CreateSessionButton = styled.button`
 
 export default function Dashboard() {
     const [showCodeModal, setShowCodeModal] = useState(false);
+    const [showJoinSessionModal, setShowJoinSessionModal] = useState(false);
 
     function toggleModal() {
         setShowCodeModal(!showCodeModal);
+    }
+
+    function toggleJoinModal() {
+        setShowJoinSessionModal(!showJoinSessionModal);
     }
 
     return (
@@ -66,12 +72,23 @@ export default function Dashboard() {
             ) : (
                 ''
             )}
+
+            {showJoinSessionModal ? (
+                <JoinSessionModal
+                    showJoinSessionModal={showJoinSessionModal}
+                    setShowJoinSessionModal={setShowJoinSessionModal}
+                ></JoinSessionModal>
+            ) : (
+                ''
+            )}
             <Nav></Nav>
             <div className="ButtonContainer">
                 <CreateSessionButton onClick={toggleModal}>
                     Create Session
                 </CreateSessionButton>
-                <CreateSessionButton>Join Session</CreateSessionButton>
+                <CreateSessionButton onClick={toggleJoinModal}>
+                    Join Session
+                </CreateSessionButton>
             </div>
         </DashboardHome>
     );

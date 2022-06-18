@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom';
 import '../css/style.css';
 import { useAuth } from './AuthProvider';
 
-const CodeModalContainer = styled.div`
+const JoinModal = styled.div`
     height: 100vh;
     width: 100vw;
     background: rgba(0, 0, 0, 0.4);
@@ -65,25 +65,13 @@ const CodeButton = styled.button`
         props.inverted ? 'var(--white)' : 'var(--light-purple)'};
     cursor: pointer;
     transition: 0.3s all ease;
-    margin: 0 5px;
-
+    margin: 10px 5px;
     :hover {
         background: ${(props) =>
             props.inverted ? 'var(--black)' : 'var(--light-purple)'};
         color: ${(props) =>
             props.inverted ? 'var(--light-purple)' : 'var(--white)'};
     }
-`;
-
-const CodeDiv = styled.div`
-    color: var(--white);
-    font-family: var(--Karla);
-    font-size: 1.1rem;
-    margin: 0 0 20px 0;
-    background: ${(props) => (props.error ? 'red' : 'var(--light-purple)')};
-    padding: 10px 5px;
-    word-break: break-all;
-    border-radius: 5px;
 `;
 
 const CloseButton = styled.p`
@@ -101,9 +89,10 @@ const CodeInput = styled.input`
     color: var(--light-purple);
 `;
 
-export default function GenerateCodeModal({ showCodeModal, setShowCodeModal }) {
-    // State
-    // const [generatedCode, setGeneratedCode] = useState('Loading...');
+export default function JoinSessionModal({
+    showJoinSessionModal,
+    setShowJoinSessionModal,
+}) {
     const [clipboardCopied, setClipboardCopied] = useState(false);
     const [sessionCode, setSessionCode] = useState(null);
     const [errorMessage, setErrorMessage] = useState(null);
@@ -112,25 +101,12 @@ export default function GenerateCodeModal({ showCodeModal, setShowCodeModal }) {
     const history = useHistory();
 
     function closeModal() {
-        setShowCodeModal(!showCodeModal);
+        setShowJoinSessionModal(!showJoinSessionModal);
     }
 
     // Stop 'close' click event from going to parent
     function stopPropagation(e) {
         e.stopPropagation();
-    }
-
-    async function updateClipboard() {
-        if (sessionCode) {
-            try {
-                await navigator.clipboard.writeText(
-                    `/session/${auth.user.username}/${sessionCode}`
-                );
-                setClipboardCopied(true);
-            } catch (err) {
-                setClipboardCopied(false);
-            }
-        }
     }
 
     function handleInput(e) {
@@ -159,7 +135,7 @@ export default function GenerateCodeModal({ showCodeModal, setShowCodeModal }) {
         }
 
         let res = await fetch(
-            `${process.env.REACT_APP_API_URL}/api/session/code/`,
+            `${process.env.REACT_APP_API_URL}/api/session/valid/`,
             {
                 method: 'POST',
                 mode: 'cors',
@@ -170,14 +146,14 @@ export default function GenerateCodeModal({ showCodeModal, setShowCodeModal }) {
                 body: JSON.stringify({
                     user: auth.user,
                     token: accessToken,
-                    code: sessionCode,
+                    code: sessionCode, // will contain host
                 }),
             }
         );
 
-        // Conflicting session codes
-        if (res.status === 409) {
-            setErrorMessage('Session already exists.');
+        // Session code does not exist
+        if (res.status === 400) {
+            setErrorMessage('Not valid.');
             return;
         }
 
@@ -186,11 +162,11 @@ export default function GenerateCodeModal({ showCodeModal, setShowCodeModal }) {
             return;
         }
 
-        history.push(`/session/${auth.user.username}/${sessionCode}`);
+        history.push(`/session/${sessionCode}`);
     }
 
     return (
-        <CodeModalContainer onClick={closeModal}>
+        <JoinModal onClick={closeModal}>
             <CodeModal onClick={stopPropagation}>
                 <CloseButton onClick={closeModal}>
                     Close <span>X</span>
@@ -198,14 +174,7 @@ export default function GenerateCodeModal({ showCodeModal, setShowCodeModal }) {
                 <ModalContent>
                     <p className="session-code-heading">Session Code:</p>
                     <CodeInput type="text" onChange={handleInput} />
-                    <CodeDiv error={errorMessage ? true : undefined}>
-                        {errorMessage ||
-                            `${auth.user.username}/${sessionCode ?? ''}`}
-                    </CodeDiv>
                     <div>
-                        <CodeButton onClick={updateClipboard}>
-                            {clipboardCopied ? 'Copied!' : 'Copy Code'}
-                        </CodeButton>
                         <CodeButton
                             inverted={true}
                             onClick={() => {
@@ -217,6 +186,6 @@ export default function GenerateCodeModal({ showCodeModal, setShowCodeModal }) {
                     </div>
                 </ModalContent>
             </CodeModal>
-        </CodeModalContainer>
+        </JoinModal>
     );
 }
