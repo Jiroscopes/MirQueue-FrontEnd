@@ -16,6 +16,10 @@ pids
 *.seed
 *.pid.lock
 
+.env.*
+
+/build
+
 Dockerfile.prod
 
 .DS_Store
