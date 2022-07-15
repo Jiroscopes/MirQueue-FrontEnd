@@ -181,7 +181,7 @@ export default function JoinSessionModal({
                                 sendCode();
                             }}
                         >
-                            Start Session
+                            Join Session
                         </CodeButton>
                     </div>
                 </ModalContent>

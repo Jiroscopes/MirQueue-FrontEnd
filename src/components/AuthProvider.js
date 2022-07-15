@@ -7,7 +7,16 @@ const authContext = createContext();
 
 function useProvideAuth() {
     // Set state to current user if they exist
-    const currentUser = JSON.parse(localStorage.getItem('user')) || null;
+    let currentUser;
+    let accessToken;
+    try {
+        currentUser = JSON.parse(localStorage.getItem('user'));
+        accessToken = localStorage.getItem('access_token');
+    } catch (error) {
+        currentUser = null;
+        accessToken = null;
+    }
+    const [authToken, setAccessToken] = useState(accessToken);
     const [user, setUser] = useState(currentUser);
 
     // Handle the messages
@@ -27,8 +36,56 @@ function useProvideAuth() {
         }
     });
 
+    useEffect(() => {
+        window.addEventListener('storage', () => {
+            setAccessToken(localStorage.getItem('access_token') ?? null);
+            try {
+                setUser(JSON.parse(localStorage.getItem('user')) ?? null);
+            } catch (error) {
+                setUser(null);
+            }
+        });
+    }, []);
+
     // Login
-    const login = (callback) => {
+    const login = async (callback) => {
+        if (user && authToken) {
+            // Need to verify they not lyin
+            const authUrl = `${process.env.REACT_APP_API_URL}/api/user`;
+            let authPayload = { accessToken };
+            // Load user info
+            let response;
+            try {
+                response = await fetch(authUrl, {
+                    method: 'POST',
+                    mode: 'cors',
+                    cache: 'no-cache',
+                    credentials: 'same-origin',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(authPayload),
+                });
+            } catch (error) {
+                setUser(null);
+                accessToken = null;
+                authPayload = null;
+                localStorage.clear();
+            }
+
+            if (response.status !== 200) {
+                setUser(null);
+                accessToken = null;
+                authPayload = null;
+                localStorage.clear();
+            }
+
+            if (response.status === 200) {
+                callback();
+                return;
+            }
+        }
+
         // Remove existing listener
         window.removeEventListener('message', incomingMessage);
 
@@ -120,7 +177,7 @@ function useProvideAuth() {
         // Add user info to localstorage
         localStorage.setItem('user', JSON.stringify(response));
         localStorage.setItem('access_token', access_token);
-        localStorage.setItem('token_expires', new Date().toString());
+        // localStorage.setItem('token_expires', new Date().toString());
 
         // Store JSON version
         setUser(response);
