@@ -66,12 +66,6 @@ const CodeButton = styled.button`
     cursor: pointer;
     transition: 0.3s all ease;
     margin: 10px 5px;
-    :hover {
-        background: ${(props) =>
-            props.inverted ? 'var(--black)' : 'var(--light-purple)'};
-        color: ${(props) =>
-            props.inverted ? 'var(--light-purple)' : 'var(--white)'};
-    }
 `;
 
 const CloseButton = styled.p`
