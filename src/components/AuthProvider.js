@@ -90,16 +90,11 @@ function useProvideAuth() {
         window.removeEventListener('message', incomingMessage);
 
         const windowFeatures = 'height=730, width=450, menubar=no,toolbar=no';
-        const clientId = '4d1c7a6700194a6dab532396ed915339';
-        const redirectUrl = `${process.env.REACT_APP_API_URL}/callback`;
-        const scopes =
-            'user-read-private user-read-email user-top-read user-modify-playback-state';
-
-        const url = `https://accounts.spotify.com/authorize?response_type=code&client_id=${clientId}&scope=${encodeURIComponent(
-            scopes
-        )}&redirect_uri=${encodeURIComponent(redirectUrl)}&show_dialog=true`;
-
-        window.open(url, 'Spotify Login', windowFeatures);
+        window.open(
+            `${process.env.REACT_APP_API_URL}/login`,
+            'Spotify Login',
+            windowFeatures
+        );
 
         // Listen for message from Popup
         window.addEventListener(
