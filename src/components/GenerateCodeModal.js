@@ -124,7 +124,7 @@ export default function GenerateCodeModal({ showCodeModal, setShowCodeModal }) {
         if (sessionCode) {
             try {
                 await navigator.clipboard.writeText(
-                    `/session/${auth.user.username}/${sessionCode}`
+                    `/session/${auth.user}/${sessionCode}`
                 );
                 setClipboardCopied(true);
             } catch (err) {
@@ -147,8 +147,6 @@ export default function GenerateCodeModal({ showCodeModal, setShowCodeModal }) {
     }
 
     async function sendCode() {
-        let accessToken = localStorage.getItem('access_token');
-
         if (!sessionCode) {
             return;
         }
@@ -159,17 +157,16 @@ export default function GenerateCodeModal({ showCodeModal, setShowCodeModal }) {
         }
 
         let res = await fetch(
-            `${process.env.REACT_APP_API_URL}/api/session/code/`,
+            `${process.env.REACT_APP_API_URL}/api/session/code`,
             {
                 method: 'POST',
                 mode: 'cors',
                 cache: 'no-cache',
+                credentials: 'include',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    user: auth.user,
-                    token: accessToken,
                     code: sessionCode,
                 }),
             }
@@ -186,7 +183,7 @@ export default function GenerateCodeModal({ showCodeModal, setShowCodeModal }) {
             return;
         }
 
-        history.push(`/session/${auth.user.username}/${sessionCode}`);
+        history.push(`/session/${auth.user}/${sessionCode}`);
     }
 
     return (
@@ -199,8 +196,7 @@ export default function GenerateCodeModal({ showCodeModal, setShowCodeModal }) {
                     <p className="session-code-heading">Session Code:</p>
                     <CodeInput type="text" onChange={handleInput} />
                     <CodeDiv error={errorMessage ? true : undefined}>
-                        {errorMessage ||
-                            `${auth.user.username}/${sessionCode ?? ''}`}
+                        {errorMessage || `${auth.user}/${sessionCode ?? ''}`}
                     </CodeDiv>
                     <div>
                         <CodeButton onClick={updateClipboard}>

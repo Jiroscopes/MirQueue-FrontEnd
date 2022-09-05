@@ -133,13 +133,12 @@ export default function JoinSessionModal({
             {
                 method: 'POST',
                 mode: 'cors',
+                credentials: 'include',
                 cache: 'no-cache',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    user: auth.user,
-                    token: accessToken,
                     code: sessionCode, // will contain host
                 }),
             }

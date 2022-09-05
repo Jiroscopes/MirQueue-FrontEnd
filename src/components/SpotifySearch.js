@@ -29,17 +29,15 @@ export default function SpotifySearch({ ws, queue }) {
 
     // Make a request to spotify every input
     async function searchSpotify() {
-        let username = JSON.parse(localStorage.getItem('user')).username;
-
         let res = await fetch(`${process.env.REACT_APP_API_URL}/api/search`, {
             method: 'POST',
             mode: 'cors',
             cache: 'no-cache',
+            credentials: 'include',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                username: username,
                 host: params,
                 sessionCode: params.sessionCode,
                 searchParam: searchParam,
