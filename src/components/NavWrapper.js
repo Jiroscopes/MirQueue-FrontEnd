@@ -6,6 +6,9 @@ import { faBars, faXmark } from '@fortawesome/free-solid-svg-icons';
 import '../css/style.css';
 import { useAuth } from './AuthProvider';
 import useWindowDimensions from '../hooks/WindowDimensions';
+import GenerateCodeModal from './GenerateCodeModal';
+import JoinSessionModal from './JoinSessionModal';
+
 const Home = styled.div`
     width: 100%;
     height: 100vh;
@@ -28,6 +31,8 @@ const Sidebar = styled.div`
     grid-row: span 3;
     border-right: 1px solid var(--light-purple);
     z-index: 1000;
+    transition: 0.6s all ease-out;
+
     & > svg {
         grid-row: 1;
         color: white;
@@ -73,6 +78,16 @@ const NavItem = styled.li`
     grid-column: span 3;
     padding: 4px 0;
     list-style-type: none;
+
+    & > p {
+        display: inline;
+    }
+
+    & > p:hover {
+        display: inline;
+        color: var(--light-purple);
+    }
+
     & > a {
         text-decoration: none;
         color: inherit;
@@ -125,14 +140,14 @@ const HamburgerContainer = styled.div`
     width: fit-content;
 `;
 
-function Menu() {
+function Menu({ ...props }) {
     return (
         <NavList>
             <NavItem>
-                <Link to="">New Session</Link>
+                <p onClick={props.toggleCodeModal}>New Session</p>
             </NavItem>
             <NavItem>
-                <Link to="">Join Session</Link>
+                <p onClick={props.toggleJoinModal}>Join Session</p>
             </NavItem>
             <NavDivider />
             <NavItem>
@@ -173,6 +188,8 @@ export default function withNavWrapper(Component) {
         const { width, height } = useWindowDimensions();
         const [sidebarVis, setSidebarVis] = useState(true); // Off by default
         const [showHamburger, setShowHamburger] = useState(true); // shown by default
+        const [showCodeModal, setShowCodeModal] = useState(false);
+        const [showJoinSessionModal, setShowJoinSessionModal] = useState(false);
         const sideBarBreakpoint = 1024; // The height we configure sidebar to collapse on
 
         useEffect(() => {
@@ -185,37 +202,64 @@ export default function withNavWrapper(Component) {
             }
         }, [width, height]);
 
+        function toggleCodeModal() {
+            setShowJoinSessionModal(false);
+            setShowCodeModal(!showCodeModal);
+        }
+
+        function toggleJoinModal() {
+            setShowCodeModal(false);
+            setShowJoinSessionModal(!showJoinSessionModal);
+        }
+
         function toggleSideBar() {
             setSidebarVis(!sidebarVis);
         }
 
         return (
             <Home>
+                {showCodeModal ? (
+                    <GenerateCodeModal
+                        toggleCodeModal={toggleCodeModal}
+                        setShowCodeModal={setShowCodeModal}
+                    />
+                ) : (
+                    ''
+                )}
+
+                {showJoinSessionModal ? (
+                    <JoinSessionModal
+                        showJoinSessionModal={showJoinSessionModal}
+                        setShowJoinSessionModal={setShowJoinSessionModal}
+                    ></JoinSessionModal>
+                ) : (
+                    ''
+                )}
                 {showHamburger && !sidebarVis ? (
                     <Hamburger onClick={toggleSideBar} />
                 ) : (
                     ''
                 )}
-                {sidebarVis ? (
-                    <Sidebar>
-                        {width < sideBarBreakpoint ? (
-                            <FontAwesomeIcon
-                                icon={faXmark}
-                                onClick={toggleSideBar}
-                            />
-                        ) : (
-                            ''
-                        )}
-                        <NavName>MirQueue</NavName>
-                        <Menu></Menu>
-                        <NavBottom>
-                            {auth.user}
-                            <span>Premium User</span>
-                        </NavBottom>
-                    </Sidebar>
-                ) : (
-                    ''
-                )}
+                <Sidebar className={sidebarVis ? 'nav-show' : 'nav-hidden'}>
+                    {width < sideBarBreakpoint ? (
+                        <FontAwesomeIcon
+                            icon={faXmark}
+                            onClick={toggleSideBar}
+                        />
+                    ) : (
+                        ''
+                    )}
+                    <NavName>MirQueue</NavName>
+                    <Menu
+                        toggleCodeModal={toggleCodeModal}
+                        toggleJoinModal={toggleJoinModal}
+                    ></Menu>
+                    <NavBottom>
+                        {auth.user}
+                        <span>Premium User</span>
+                    </NavBottom>
+                </Sidebar>
+
                 <Component
                     {...props}
                     hocClassName={

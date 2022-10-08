@@ -55,6 +55,17 @@ const ModalContent = styled.div`
     padding: 20px;
 `;
 
+const CodeDiv = styled.div`
+    color: var(--white);
+    font-family: var(--Karla);
+    font-size: 1.1rem;
+    margin: 0 0 20px 0;
+    background: red;
+    padding: 10px 5px;
+    word-break: break-all;
+    border-radius: 5px;
+`;
+
 const CodeButton = styled.button`
     background: ${(props) =>
         props.inverted ? 'var(--light-purple)' : 'transparent'};
@@ -128,24 +139,31 @@ export default function JoinSessionModal({
             return;
         }
 
-        let res = await fetch(
-            `${process.env.REACT_APP_API_URL}/api/session/valid/`,
-            {
-                method: 'POST',
-                mode: 'cors',
-                credentials: 'include',
-                cache: 'no-cache',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    code: sessionCode, // will contain host
-                }),
-            }
-        );
+        let res = null;
+
+        try {
+            res = await fetch(
+                `${process.env.REACT_APP_API_URL}/api/session/valid/`,
+                {
+                    method: 'POST',
+                    mode: 'cors',
+                    credentials: 'include',
+                    cache: 'no-cache',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        code: sessionCode, // will contain host
+                    }),
+                }
+            );
+        } catch (err) {
+            setErrorMessage('Not valid.');
+            return;
+        }
 
         // Session code does not exist
-        if (res.status === 400) {
+        if (!res.ok || res.status === 400) {
             setErrorMessage('Not valid.');
             return;
         }
@@ -167,6 +185,7 @@ export default function JoinSessionModal({
                 <ModalContent>
                     <p className="session-code-heading">Session Code:</p>
                     <CodeInput type="text" onChange={handleInput} />
+                    {errorMessage ? <CodeDiv>{errorMessage}</CodeDiv> : ''}
                     <div>
                         <CodeButton
                             inverted={true}

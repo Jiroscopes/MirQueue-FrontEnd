@@ -101,7 +101,7 @@ const CodeInput = styled.input`
     color: var(--light-purple);
 `;
 
-export default function GenerateCodeModal({ showCodeModal, setShowCodeModal }) {
+export default function GenerateCodeModal({ showCodeModal, toggleCodeModal }) {
     // State
     // const [generatedCode, setGeneratedCode] = useState('Loading...');
     const [clipboardCopied, setClipboardCopied] = useState(false);
@@ -112,7 +112,7 @@ export default function GenerateCodeModal({ showCodeModal, setShowCodeModal }) {
     const history = useHistory();
 
     function closeModal() {
-        setShowCodeModal(!showCodeModal);
+        toggleCodeModal(!showCodeModal);
     }
 
     // Stop 'close' click event from going to parent
