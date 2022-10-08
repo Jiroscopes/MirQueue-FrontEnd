@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import '../css/style.css';
 // import { useAuth } from './AuthProvider';
@@ -50,7 +50,7 @@ const CreateSessionButton = styled.button`
     }
 `;
 
-export default function Dashboard() {
+export default function Dashboard({ ...props }) {
     const [showCodeModal, setShowCodeModal] = useState(false);
     const [showJoinSessionModal, setShowJoinSessionModal] = useState(false);
 
@@ -63,33 +63,34 @@ export default function Dashboard() {
     }
 
     return (
-        <DashboardHome>
-            {showCodeModal ? (
-                <GenerateCodeModal
-                    showCodeModal={showCodeModal}
-                    setShowCodeModal={setShowCodeModal}
-                />
-            ) : (
-                ''
-            )}
+        <h1 className={props.hocClassName}>Pog</h1>
+        // <DashboardHome>
+        //     {showCodeModal ? (
+        //         <GenerateCodeModal
+        //             showCodeModal={showCodeModal}
+        //             setShowCodeModal={setShowCodeModal}
+        //         />
+        //     ) : (
+        //         ''
+        //     )}
 
-            {showJoinSessionModal ? (
-                <JoinSessionModal
-                    showJoinSessionModal={showJoinSessionModal}
-                    setShowJoinSessionModal={setShowJoinSessionModal}
-                ></JoinSessionModal>
-            ) : (
-                ''
-            )}
-            <Nav></Nav>
-            <div className="ButtonContainer">
-                <CreateSessionButton onClick={toggleModal}>
-                    Create Session
-                </CreateSessionButton>
-                <CreateSessionButton onClick={toggleJoinModal}>
-                    Join Session
-                </CreateSessionButton>
-            </div>
-        </DashboardHome>
+        //     {showJoinSessionModal ? (
+        //         <JoinSessionModal
+        //             showJoinSessionModal={showJoinSessionModal}
+        //             setShowJoinSessionModal={setShowJoinSessionModal}
+        //         ></JoinSessionModal>
+        //     ) : (
+        //         ''
+        //     )}
+        //     <Nav></Nav>
+        //     <div className="ButtonContainer">
+        //         <CreateSessionButton onClick={toggleModal}>
+        //             Create Session
+        //         </CreateSessionButton>
+        //         <CreateSessionButton onClick={toggleJoinModal}>
+        //             Join Session
+        //         </CreateSessionButton>
+        //     </div>
+        // </DashboardHome>
     );
 }

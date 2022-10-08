@@ -7,8 +7,10 @@ import React from 'react';
 import PrivateRoute from './PrivateRoute';
 import AuthProvider from './AuthProvider';
 import SessionRoom from './SessionRoom';
-// Switch checks the routes in order
+import NavWrapper from './NavWrapper';
 
+const Home = NavWrapper(Dashboard);
+// Switch checks the routes in order
 const Router = () => (
     <AuthProvider>
         <BrowserRouter>
@@ -27,7 +29,7 @@ const Router = () => (
                     component={SessionRoom}
                     exact
                 />
-                <PrivateRoute component={Dashboard} path="/dashboard" exact />
+                <PrivateRoute component={Home} path="/dashboard" exact />
             </Switch>
         </BrowserRouter>
     </AuthProvider>

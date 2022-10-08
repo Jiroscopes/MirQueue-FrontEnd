@@ -37,8 +37,8 @@ export default function GetStarted() {
                         y2="861.999"
                         gradientUnits="userSpaceOnUse"
                     >
-                        <stop stop-color="#D789D7" />
-                        <stop offset="1" stop-color="#2A3D66" />
+                        <stop stopColor="#D789D7" />
+                        <stop offset="1" stopColor="#2A3D66" />
                     </linearGradient>
                 </defs>
             </svg>
@@ -62,8 +62,8 @@ export default function GetStarted() {
                         y2="1215.34"
                         gradientUnits="userSpaceOnUse"
                     >
-                        <stop stop-color="#D789D7" />
-                        <stop offset="1" stop-color="#2A3D66" />
+                        <stop stopColor="#D789D7" />
+                        <stop offset="1" stopColor="#2A3D66" />
                     </linearGradient>
                 </defs>
             </svg>
