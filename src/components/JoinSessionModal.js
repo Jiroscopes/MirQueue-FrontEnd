@@ -7,7 +7,7 @@ import { useAuth } from './AuthProvider';
 const JoinModal = styled.div`
     height: 100vh;
     width: 100vw;
-    background: rgba(0, 0, 0, 0.4);
+    background: rgba(0, 0, 0, 0.3);
     position: absolute;
     z-index: 500;
     display: flex;
@@ -16,10 +16,11 @@ const JoinModal = styled.div`
 `;
 
 const CodeModal = styled.div`
-    background: var(--black);
-    border-radius: 10px;
+    border: 1px solid var(--darker-purple);
+    background: var(--darker-purple);
+    border-radius: 5px;
     display: flex;
-    align-items: center;
+    align-items: left;
     justify-content: space-around;
     flex-direction: column;
     text-align: center;
@@ -31,7 +32,7 @@ const CodeModal = styled.div`
     }
 
     p {
-        color: var(--light-purple);
+        color: var(--white);
         margin: 0;
         font-size: 1.1rem;
         font-family: var(--Karla);
@@ -52,18 +53,7 @@ const ModalContent = styled.div`
     justify-content: center;
     flex-direction: column;
     margin-top: 10px;
-    padding: 20px;
-`;
-
-const CodeDiv = styled.div`
-    color: var(--white);
-    font-family: var(--Karla);
-    font-size: 1.1rem;
-    margin: 0 0 20px 0;
-    background: red;
-    padding: 10px 5px;
-    word-break: break-all;
-    border-radius: 5px;
+    padding: 0 20px 20px 20px;
 `;
 
 const CodeButton = styled.button`
@@ -71,12 +61,26 @@ const CodeButton = styled.button`
         props.inverted ? 'var(--light-purple)' : 'transparent'};
     border: 1px solid var(--light-purple);
     padding: 10px;
+    width: 100%;
     border-radius: 5px;
     color: ${(props) =>
         props.inverted ? 'var(--white)' : 'var(--light-purple)'};
     cursor: pointer;
     transition: 0.3s all ease;
-    margin: 10px 5px;
+
+    margin: ${(props) => (props.inverted ? ' 0 0 0 3px' : '0 3px 0 0')};
+`;
+
+const CodeDiv = styled.div`
+    color: var(--white);
+    font-family: var(--Karla);
+    font-size: 1.1rem;
+    margin: 14px 0 0px 0;
+    width: 100%;
+    background: ${(props) => (props.error ? 'red' : 'var( --darker-purple)')};
+    padding: 10px 0;
+    word-break: break-all;
+    border-radius: 5px;
 `;
 
 const CloseButton = styled.p`
@@ -86,23 +90,27 @@ const CloseButton = styled.p`
 
 const CodeInput = styled.input`
     padding: 10px;
+    box-sizing: border-box;
     margin: 20px 0 20px 0;
-    width: 350px;
+    width: 100%;
+    font-size: 1.1rem;
     background: var(--black);
     border: 2px solid var(--light-purple);
     border-radius: 5px;
-    color: var(--light-purple);
+    color: var(--white);
+
+    &:focus {
+        outline: 0;
+    }
 `;
 
 export default function JoinSessionModal({
     showJoinSessionModal,
     setShowJoinSessionModal,
 }) {
-    const [clipboardCopied, setClipboardCopied] = useState(false);
     const [sessionCode, setSessionCode] = useState(null);
     const [errorMessage, setErrorMessage] = useState(null);
 
-    const auth = useAuth();
     const history = useHistory();
 
     function closeModal() {
@@ -128,8 +136,6 @@ export default function JoinSessionModal({
     }
 
     async function sendCode() {
-        let accessToken = localStorage.getItem('access_token');
-
         if (!sessionCode) {
             return;
         }
@@ -184,9 +190,15 @@ export default function JoinSessionModal({
                 </CloseButton>
                 <ModalContent>
                     <p className="session-code-heading">Session Code:</p>
+                    {errorMessage ? (
+                        <CodeDiv error={errorMessage ? true : undefined}>
+                            {errorMessage}
+                        </CodeDiv>
+                    ) : (
+                        ''
+                    )}
                     <CodeInput type="text" onChange={handleInput} />
-                    {errorMessage ? <CodeDiv>{errorMessage}</CodeDiv> : ''}
-                    <div>
+                    <div style={{ width: '100%', display: 'flex' }}>
                         <CodeButton
                             inverted={true}
                             onClick={() => {

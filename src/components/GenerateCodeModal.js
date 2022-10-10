@@ -7,7 +7,7 @@ import { useAuth } from './AuthProvider';
 const CodeModalContainer = styled.div`
     height: 100vh;
     width: 100vw;
-    background: rgba(0, 0, 0, 0.4);
+    background: rgba(0, 0, 0, 0.3);
     position: absolute;
     z-index: 500;
     display: flex;
@@ -16,10 +16,11 @@ const CodeModalContainer = styled.div`
 `;
 
 const CodeModal = styled.div`
-    background: var(--black);
-    border-radius: 10px;
+    border: 1px solid var(--darker-purple);
+    background: var(--darker-purple);
+    border-radius: 5px;
     display: flex;
-    align-items: center;
+    align-items: left;
     justify-content: space-around;
     flex-direction: column;
     text-align: center;
@@ -31,7 +32,7 @@ const CodeModal = styled.div`
     }
 
     p {
-        color: var(--light-purple);
+        color: var(--white);
         margin: 0;
         font-size: 1.1rem;
         font-family: var(--Karla);
@@ -52,7 +53,7 @@ const ModalContent = styled.div`
     justify-content: center;
     flex-direction: column;
     margin-top: 10px;
-    padding: 20px;
+    padding: 0 20px 20px 20px;
 `;
 
 const CodeButton = styled.button`
@@ -60,28 +61,24 @@ const CodeButton = styled.button`
         props.inverted ? 'var(--light-purple)' : 'transparent'};
     border: 1px solid var(--light-purple);
     padding: 10px;
+    width: 50%;
     border-radius: 5px;
     color: ${(props) =>
         props.inverted ? 'var(--white)' : 'var(--light-purple)'};
     cursor: pointer;
     transition: 0.3s all ease;
-    margin: 0 5px;
 
-    :hover {
-        background: ${(props) =>
-            props.inverted ? 'var(--black)' : 'var(--light-purple)'};
-        color: ${(props) =>
-            props.inverted ? 'var(--light-purple)' : 'var(--white)'};
-    }
+    margin: ${(props) => (props.inverted ? ' 0 0 0 3px' : '0 3px 0 0')};
 `;
 
 const CodeDiv = styled.div`
     color: var(--white);
     font-family: var(--Karla);
     font-size: 1.1rem;
-    margin: 0 0 20px 0;
-    background: ${(props) => (props.error ? 'red' : 'var(--light-purple)')};
-    padding: 10px 5px;
+    margin: 14px 0 0px 0;
+    width: 100%;
+    background: ${(props) => (props.error ? 'red' : 'var( --darker-purple)')};
+    padding: 10px 0;
     word-break: break-all;
     border-radius: 5px;
 `;
@@ -93,12 +90,18 @@ const CloseButton = styled.p`
 
 const CodeInput = styled.input`
     padding: 10px;
+    box-sizing: border-box;
     margin: 20px 0 20px 0;
-    width: 350px;
+    width: 100%;
+    font-size: 1.1rem;
     background: var(--black);
     border: 2px solid var(--light-purple);
     border-radius: 5px;
-    color: var(--light-purple);
+    color: var(--white);
+
+    &:focus {
+        outline: 0;
+    }
 `;
 
 export default function GenerateCodeModal({ showCodeModal, toggleCodeModal }) {
@@ -193,12 +196,16 @@ export default function GenerateCodeModal({ showCodeModal, toggleCodeModal }) {
                     Close <span>X</span>
                 </CloseButton>
                 <ModalContent>
-                    <p className="session-code-heading">Session Code:</p>
-                    <CodeInput type="text" onChange={handleInput} />
+                    <p className="session-code-heading">Enter Session Code:</p>
                     <CodeDiv error={errorMessage ? true : undefined}>
                         {errorMessage || `${auth.user}/${sessionCode ?? ''}`}
                     </CodeDiv>
-                    <div>
+                    <CodeInput
+                        type="text"
+                        onChange={handleInput}
+                        maxLength="20"
+                    />
+                    <div style={{ width: '100%', display: 'flex' }}>
                         <CodeButton onClick={updateClipboard}>
                             {clipboardCopied ? 'Copied!' : 'Copy Code'}
                         </CodeButton>
