@@ -205,11 +205,13 @@ export default function withNavWrapper(Component) {
         function toggleCodeModal() {
             setShowJoinSessionModal(false);
             setShowCodeModal(!showCodeModal);
+            toggleSideBar(false);
         }
 
         function toggleJoinModal() {
             setShowCodeModal(false);
             setShowJoinSessionModal(!showJoinSessionModal);
+            toggleSideBar(false);
         }
 
         function toggleSideBar() {

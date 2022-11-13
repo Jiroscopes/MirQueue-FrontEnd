@@ -1,8 +1,22 @@
 import React, { useEffect, useRef, useState } from 'react';
+import styled from 'styled-components';
 import SpotifySearch from './SpotifySearch';
 import { useAuth } from './AuthProvider';
-// import GuestNamePrompt from './GuestNamePrompt';
 import { useParams } from 'react-router-dom';
+// import GuestNamePrompt from './GuestNamePrompt';
+
+const SessionContainer = styled.div`
+    display: flex;
+    height: 100%;
+    width: 100%;
+    grid-column: 3 / 5;
+    flex-direction: column;
+    font-family: var(--Karla);
+
+    @media (max-width: 768px) {
+        grid-column: 2 / 5;
+    }
+`;
 
 export default function SessionRoom() {
     let ws = useRef(null);
@@ -57,7 +71,7 @@ export default function SessionRoom() {
     });
 
     return (
-        <div className="session">
+        <SessionContainer>
             {/* {showGuestPrompt ? (
                 <GuestNamePrompt
                     setShowGuestPrompt={setShowGuestPrompt}
@@ -72,6 +86,6 @@ export default function SessionRoom() {
                 </div>
             </div>
             {/* <Nav></Nav> */}
-        </div>
+        </SessionContainer>
     );
 }

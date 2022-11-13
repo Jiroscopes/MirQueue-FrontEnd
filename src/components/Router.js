@@ -10,6 +10,7 @@ import SessionRoom from './SessionRoom';
 import NavWrapper from './NavWrapper';
 
 const Home = NavWrapper(Dashboard);
+const Session = NavWrapper(SessionRoom);
 // Switch checks the routes in order
 const Router = () => (
     <AuthProvider>
@@ -26,7 +27,7 @@ const Router = () => (
                 </Route>
                 <PrivateRoute
                     path="/session/:host/:sessionCode"
-                    component={SessionRoom}
+                    component={Session}
                     exact
                 />
                 <PrivateRoute component={Home} path="/dashboard" exact />
