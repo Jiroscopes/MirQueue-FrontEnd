@@ -309,13 +309,9 @@ Session Room
 Search
 =========
 */
-/* .search-bar {
-    display: flex;
-    justify-content: flex-start;
+.search-bar {
     width: 100%;
-    align-items: center;
-    flex-direction: column;
-} */
+}
 
 .search-bar-input-container > input {
     width: 100%;

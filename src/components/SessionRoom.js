@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import SpotifySearch from './SpotifySearch';
+import Player from './Player';
 import { useAuth } from './AuthProvider';
 import { useParams } from 'react-router-dom';
 // import GuestNamePrompt from './GuestNamePrompt';
@@ -10,8 +11,10 @@ const SessionContainer = styled.div`
     height: 100%;
     width: 100%;
     grid-column: 3 / 5;
+    grid-row: 1 / 4;
     flex-direction: column;
     font-family: var(--Karla);
+    align-items: center;
 
     @media (max-width: 768px) {
         grid-column: 2 / 5;
@@ -25,6 +28,13 @@ export default function SessionRoom() {
     // const [showGuestPrompt, setShowGuestPrompt] = useState(false);
     const [sessionHost, setSessionHost] = useState(null);
     const [queue, setQueue] = useState({});
+    const [playback, setPlayback] = useState({});
+
+    const checkHostMsg = {
+        type: 'check_playback',
+        user: auth.user,
+        session: params,
+    };
 
     useEffect(() => {
         setSessionHost(params.host);
@@ -45,6 +55,7 @@ export default function SessionRoom() {
                     user: auth.user,
                 };
                 ws.current.send(JSON.stringify(socketMessage));
+                ws.current.send(JSON.stringify(checkHostMsg));
                 console.log('WS Connected');
             };
             ws.current.onclose = () => {
@@ -54,6 +65,7 @@ export default function SessionRoom() {
                 ws.current.close();
             };
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [auth.user]);
 
     // Websocket messages
@@ -61,10 +73,15 @@ export default function SessionRoom() {
         if (auth.user) {
             ws.current.onmessage = async (event) => {
                 const msg = JSON.parse(event.data);
-                console.log(msg);
                 if (msg.status === 'success') {
-                    // Added song to the queue
-                    setQueue({ ...queue, [msg.track.id]: msg.track.name });
+                    if (msg.type === 'add_song') {
+                        // Added song to the queue
+                        setQueue({ ...queue, [msg.track.id]: msg.track.name });
+                    }
+
+                    if (msg.type === 'check_playback') {
+                        setPlayback(msg.playback);
+                    }
                 }
             };
         }
@@ -85,6 +102,7 @@ export default function SessionRoom() {
                     <SpotifySearch ws={ws} queue={queue} />
                 </div>
             </div>
+            <Player ws={ws} playback={playback} />
             {/* <Nav></Nav> */}
         </SessionContainer>
     );
