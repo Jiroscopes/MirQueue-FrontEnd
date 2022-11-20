@@ -74,7 +74,7 @@ const NavItem = styled.li`
     font-weight: normal;
     color: var(--white);
     font-family: var(--Karla);
-    font-size: 1rem;
+    font-size: 1.2rem;
     grid-column: span 3;
     padding: 4px 0;
     list-style-type: none;

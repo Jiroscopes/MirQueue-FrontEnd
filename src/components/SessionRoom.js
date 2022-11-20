@@ -29,6 +29,7 @@ export default function SessionRoom() {
     const [sessionHost, setSessionHost] = useState(null);
     const [queue, setQueue] = useState({});
     const [playback, setPlayback] = useState({});
+    const [showTracks, setShowTracks] = useState(false);
 
     const checkHostMsg = {
         type: 'check_playback',
@@ -73,14 +74,18 @@ export default function SessionRoom() {
         if (auth.user) {
             ws.current.onmessage = async (event) => {
                 const msg = JSON.parse(event.data);
+                // Handle responses from WS
                 if (msg.status === 'success') {
                     if (msg.type === 'add_song') {
                         // Added song to the queue
-                        setQueue({ ...queue, [msg.track.id]: msg.track.name });
+                        setQueue({
+                            ...queue,
+                            [msg.payload.id]: msg.payload.name,
+                        });
                     }
 
                     if (msg.type === 'check_playback') {
-                        setPlayback(msg.playback);
+                        setPlayback(msg.payload);
                     }
                 }
             };
@@ -88,7 +93,7 @@ export default function SessionRoom() {
     });
 
     return (
-        <SessionContainer>
+        <SessionContainer onClick={() => setShowTracks(false)}>
             {/* {showGuestPrompt ? (
                 <GuestNamePrompt
                     setShowGuestPrompt={setShowGuestPrompt}
@@ -99,7 +104,12 @@ export default function SessionRoom() {
             )} */}
             <div className="search-bar">
                 <div className="search-bar-input-container">
-                    <SpotifySearch ws={ws} queue={queue} />
+                    <SpotifySearch
+                        ws={ws}
+                        queue={queue}
+                        showTracks={showTracks}
+                        setShowTracks={setShowTracks}
+                    />
                 </div>
             </div>
             <Player ws={ws} playback={playback} />

@@ -2,7 +2,12 @@ import React, { useState, useEffect } from 'react';
 import SearchResult from './SearchResult';
 import { useParams } from 'react-router-dom';
 
-export default function SpotifySearch({ ws, queue }) {
+export default function SpotifySearch({
+    ws,
+    queue,
+    showTracks,
+    setShowTracks,
+}) {
     // State here, update on type and make a request each time
     const [searchParam, setSearchParam] = useState(null);
     const [currentTrackList, setCurrentTrackList] = useState(null);
@@ -24,6 +29,7 @@ export default function SpotifySearch({ ws, queue }) {
             setCurrentTrackList(null);
         }
 
+        setShowTracks(true);
         setSearchParam(e.target.value);
     }
 
@@ -97,7 +103,7 @@ export default function SpotifySearch({ ws, queue }) {
                 onChange={handleInput}
             />
             <div className="track-result-container">
-                {currentTrackList ? displaySongs() : ''}
+                {currentTrackList && showTracks ? displaySongs() : ''}
             </div>
         </>
     );
