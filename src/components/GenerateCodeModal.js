@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
 import '../css/style.css';
@@ -114,6 +114,12 @@ export default function GenerateCodeModal({ showCodeModal, toggleCodeModal }) {
     const auth = useAuth();
     const history = useHistory();
 
+    useEffect(() => {
+        return () => {
+            setErrorMessage(null);
+        };
+    });
+
     function closeModal() {
         toggleCodeModal(!showCodeModal);
     }
@@ -174,6 +180,10 @@ export default function GenerateCodeModal({ showCodeModal, toggleCodeModal }) {
                 }),
             }
         );
+
+        if (res.status === 401) {
+            history.push('/login');
+        }
 
         // Conflicting session codes
         if (res.status === 409) {

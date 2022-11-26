@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
 import '../css/style.css';
@@ -111,6 +111,12 @@ export default function JoinSessionModal({
     const [sessionCode, setSessionCode] = useState(null);
     const [errorMessage, setErrorMessage] = useState(null);
 
+    useEffect(() => {
+        return () => {
+            setErrorMessage(null);
+        };
+    });
+
     const history = useHistory();
 
     function closeModal() {
@@ -163,6 +169,10 @@ export default function JoinSessionModal({
                     }),
                 }
             );
+
+            if (res.status === 401) {
+                history.push('/login');
+            }
         } catch (err) {
             setErrorMessage('Not valid.');
             return;

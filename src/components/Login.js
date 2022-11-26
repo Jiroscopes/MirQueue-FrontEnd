@@ -14,9 +14,9 @@ export default function Login() {
                 <div className="login-padding">
                     <p className="login-prompt">Please select an option...</p>
                     <div className="login-buttons-container">
-                        <Link className="login-buttons" to="/enter-code">
+                        {/* <Link className="login-buttons" to="/enter-code">
                             I have a session code <br /> (Guest login)
-                        </Link>
+                        </Link> */}
                         <button
                             className="login-buttons spotify-login"
                             onClick={() =>
