@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faXmark } from '@fortawesome/free-solid-svg-icons';
 import '../css/style.css';
@@ -32,6 +32,7 @@ const Sidebar = styled.div`
     border-right: 1px solid var(--light-purple);
     z-index: 1000;
     transition: 0.6s all ease-out;
+    z-index: 100000;
 
     & > svg {
         grid-row: 1;
@@ -78,6 +79,7 @@ const NavItem = styled.li`
     grid-column: span 3;
     padding: 4px 0;
     list-style-type: none;
+    cursor: pointer;
 
     & > p {
         display: inline;
@@ -136,6 +138,7 @@ const HamburgerContainer = styled.div`
     position: absolute;
     cursor: pointer;
     padding: 15px;
+    z-index: 100;
     height: fit-content;
     width: fit-content;
 `;
@@ -151,17 +154,23 @@ function Menu({ ...props }) {
             </NavItem>
             <NavDivider />
             <NavItem>
-                <Link to="">My Sessions</Link>
+                <Link to="#">My Sessions</Link>
             </NavItem>
             <NavItem>
-                <Link to="">Session History</Link>
+                <Link className="disabled-link" to="#">
+                    Session History
+                </Link>
             </NavItem>
             <NavItem>
-                <Link to="">Track History</Link>
+                <Link className="disabled-link" to="#">
+                    Track History
+                </Link>
             </NavItem>
             <NavDivider />
             <NavItem>
-                <Link to="">Settings</Link>
+                <Link className="disabled-link" to="#">
+                    Settings
+                </Link>
             </NavItem>
         </NavList>
     );
@@ -185,8 +194,9 @@ function Hamburger(props) {
 export default function withNavWrapper(Component) {
     return function ({ ...props }) {
         const auth = useAuth();
+        const history = useHistory();
         const { width, height } = useWindowDimensions();
-        const [sidebarVis, setSidebarVis] = useState(true); // Off by default
+        const [sidebarVis, setSidebarVis] = useState(false); // Off by default
         const [showHamburger, setShowHamburger] = useState(true); // shown by default
         const [showCodeModal, setShowCodeModal] = useState(false);
         const [showJoinSessionModal, setShowJoinSessionModal] = useState(false);
@@ -215,6 +225,7 @@ export default function withNavWrapper(Component) {
         }
 
         function toggleSideBar() {
+            if (!auth.user) history.push('/login');
             setSidebarVis(!sidebarVis);
         }
 

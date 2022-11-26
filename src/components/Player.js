@@ -32,6 +32,7 @@ const TrackContainer = styled.div`
     justify-content: center;
     overflow: hidden;
     max-width: 500px;
+    padding: 0 30px;
 
     img {
         max-width: 100%;

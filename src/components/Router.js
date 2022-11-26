@@ -8,9 +8,11 @@ import PrivateRoute from './PrivateRoute';
 import AuthProvider from './AuthProvider';
 import SessionRoom from './SessionRoom';
 import NavWrapper from './NavWrapper';
+import NotificationBar from './NotificationBar';
 
-const Home = NavWrapper(Dashboard);
-const Session = NavWrapper(SessionRoom);
+//const Home = NavWrapper(Dashboard);
+const Session = NotificationBar(NavWrapper(SessionRoom));
+const Home = NotificationBar(NavWrapper(Dashboard));
 // Switch checks the routes in order
 const Router = () => (
     <AuthProvider>

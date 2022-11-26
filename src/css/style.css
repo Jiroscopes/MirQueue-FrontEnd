@@ -21,20 +21,8 @@
     text-align: center;
 }
 
-::placeholder {
-    /* Chrome, Firefox, Opera, Safari 10.1+ */
-    color: var(--dark-purple);
-    opacity: 1; /* Firefox */
-}
-
-:-ms-input-placeholder {
-    /* Internet Explorer 10-11 */
-    color: var(--dark-purple);
-}
-
-::-ms-input-placeholder {
-    /* Microsoft Edge */
-    color: var(--dark-purple);
+.disabled-link {
+    color: gray !important;
 }
 
 body {
