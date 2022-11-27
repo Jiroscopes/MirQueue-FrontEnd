@@ -29,7 +29,7 @@ function useProvideAuth() {
 
     // Login
     const login = async (callback) => {
-        if (user) {
+        if (isAuthenticated()) {
             callback();
             return;
         }
@@ -62,6 +62,10 @@ function useProvideAuth() {
         console.log('logout');
     };
 
+    const isAuthenticated = () => {
+        return Cookies.get('mirqueue_user') ?? null;
+    };
+
     const refreshAuth = (newUser) => {
         setUser(newUser);
     };
@@ -84,6 +88,7 @@ function useProvideAuth() {
         user,
         updateUser,
         refreshAuth,
+        isAuthenticated,
         login,
         logout,
     };
