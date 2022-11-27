@@ -157,7 +157,7 @@ function Menu({ ...props }) {
                 <Link to="/dashboard">Dashboard</Link>
             </NavItem>
             <NavItem>
-                <Link to={`${props.username}/sessions`}>My Sessions</Link>
+                <Link to={`/${props.username}/sessions`}>My Sessions</Link>
             </NavItem>
             <NavItem>
                 <Link className="disabled-link" to="#">
