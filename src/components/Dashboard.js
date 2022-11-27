@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import SessionCard from './SessionCard';
 import '../css/style.css';
 
 const Dash = styled.div`
@@ -21,7 +22,7 @@ const Dash = styled.div`
     }
 `;
 
-export default function Dashboard({ ...props }) {
+export default function Dashboard({ component }) {
     return (
         <Dash>
             <h1>It's empty here...</h1>

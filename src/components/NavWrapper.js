@@ -154,7 +154,10 @@ function Menu({ ...props }) {
             </NavItem>
             <NavDivider />
             <NavItem>
-                <Link to="#">My Sessions</Link>
+                <Link to="/dashboard">Dashboard</Link>
+            </NavItem>
+            <NavItem>
+                <Link to={`${props.username}/sessions`}>My Sessions</Link>
             </NavItem>
             <NavItem>
                 <Link className="disabled-link" to="#">
@@ -264,6 +267,7 @@ export default function withNavWrapper(Component) {
                     )}
                     <NavName>MirQueue</NavName>
                     <Menu
+                        username={auth.user}
                         toggleCodeModal={toggleCodeModal}
                         toggleJoinModal={toggleJoinModal}
                     ></Menu>
