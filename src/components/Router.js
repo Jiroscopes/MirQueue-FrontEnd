@@ -10,11 +10,13 @@ import SessionRoom from './SessionRoom';
 import NavWrapper from './NavWrapper';
 import NotificationBar from './NotificationBar';
 import MySessions from './MySessions';
+import Faq from './Faq';
 
 //const Home = NavWrapper(Dashboard);
 const Session = NotificationBar(NavWrapper(SessionRoom));
 const Home = NotificationBar(NavWrapper(Dashboard));
 const MySessionsHome = NotificationBar(NavWrapper(MySessions));
+const FaqPage = NotificationBar(Faq);
 // Switch checks the routes in order
 const Router = () => (
     <AuthProvider>
@@ -28,6 +30,9 @@ const Router = () => (
                 </Route>
                 <Route path="/enter-code" exact>
                     <EnterCode />
+                </Route>
+                <Route path="/faq" exact>
+                    <FaqPage />
                 </Route>
                 <PrivateRoute
                     component={MySessionsHome}

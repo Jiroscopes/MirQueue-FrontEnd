@@ -1,5 +1,6 @@
 import '../css/style.css';
 import { Link } from 'react-router-dom';
+// import styled from 'styled-components';
 
 export default function GetStarted() {
     return (
@@ -15,6 +16,12 @@ export default function GetStarted() {
                     to="/login"
                 >
                     Get Started
+                </Link>
+                <Link
+                    className="how-it-works-button align-self-center"
+                    to="/faq"
+                >
+                    How it works
                 </Link>
             </div>
 

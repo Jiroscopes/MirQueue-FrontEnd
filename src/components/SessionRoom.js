@@ -54,6 +54,7 @@ export default function SessionRoom() {
                 let socketMessage = {
                     type: 'joined_session',
                     user: auth.user,
+                    session: params.sessionCode,
                 };
                 ws.current.send(JSON.stringify(socketMessage));
                 ws.current.send(JSON.stringify(checkHostMsg));

@@ -68,8 +68,8 @@ Get Started
 */
 
 .get-started-button {
-    color: var(--light-purple);
-    background: transparent;
+    color: var(--white);
+    background: var(--light-purple);
     border: 1px solid var(--light-purple);
     border-radius: 20px;
     padding: 10px 30px;
@@ -80,6 +80,23 @@ Get Started
 }
 
 .get-started-button:hover {
+    color: var(--light-purple);
+    background: transparent;
+}
+
+.how-it-works-button {
+    color: var(--light-purple);
+    background: transparent;
+    border: 1px solid var(--light-purple);
+    border-radius: 20px;
+    padding: 10px 30px;
+    transition: 0.5s all ease;
+    cursor: pointer;
+    text-decoration: none;
+    font-family: var(--Karla);
+    margin-left: 10px;
+}
+.how-it-works-button:hover {
     color: var(--white-purple);
     background: var(--light-purple);
 }
